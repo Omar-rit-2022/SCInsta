@@ -80,6 +80,10 @@ then
     # Patch IPA for sideloading
     ipapatch --input "packages/SCInsta-sideloaded.ipa" --inplace --noconfirm
 
+    # Drop stale signatures left in front of the current ones so AltStore can re-sign
+    # (otherwise AltStore fails with: ldid.cpp(1461): _assert(): end >= size - 0x10)
+    python3 .github/scripts/fix_altstore_layout.py "packages/SCInsta-sideloaded.ipa"
+
     echo -e "\033[1m\033[32mDone, we hope you enjoy SCInsta!\033[0m\n\nYou can find the ipa file at: $(pwd)/packages"
 
 elif [ "$1" == "rootless" ];
